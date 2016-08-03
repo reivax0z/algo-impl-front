@@ -21,6 +21,7 @@
 
       .axis text {
         font: 10px sans-serif;
+        fill: black;
       }
 
       .axis path,
@@ -28,9 +29,6 @@
         fill: none;
         stroke: #000;
         shape-rendering: crispEdges;
-      }
-      .axis text {
-        fill: black;
       }
     </style>
     <svg id="svg" class="chart"></svg>
@@ -48,22 +46,20 @@
       },
 
       createElements: function () {
-        //this.width = 420;
         this.barHeight = 20;
 
         this.margin = {top: 20, right: 30, bottom: 30, left: 40};
         this.width = 960 - this.margin.left - this.margin.right;
 
-        this.x = d3.scale.linear()
+        this.x = d3.scaleLinear()
           .range([0, this.width]);
 
         this.chart = d3.select(this.$.svg)
           .attr("width", this.width + this.margin.left + this.margin.right)
           .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
 
-        this.xAxis = d3.svg.axis()
-          .scale(this.x)
-          .orient("bottom");
+        this.xAxis = d3.axisBottom()
+          .scale(this.x);
       },
       removeElements: function () {
         d3.select(this.$.svg).selectAll("*").remove();
