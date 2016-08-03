@@ -1,0 +1,94 @@
+<dom-module id="algo-rest">
+  <style include="iron-flex iron-flex-alignment">
+    .center {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+    }
+
+    .with-margin {
+      margin-bottom: 15px;
+    }
+  </style>
+  <template>
+
+    <iron-ajax
+      id="ajax"
+      url="http://localhost:8080/algo-impl/algo/sort/{{iteration}}/{{size}}"
+      handle-as="json"
+      method="GET"
+      on-response="responseCallback"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <h3>Interact and check the results</h3>
+
+    <div class="with-margin">
+      <paper-input
+        id="iteration-input"
+        label="Number of Iterations (the more and the higher the precision is)"
+        value="{{iteration::input}}"
+        type="number"
+        min="10"
+        error-message="Invalid input! (Min value is 10)"
+        auto-validate="true">
+      </paper-input>
+    </div>
+
+    <div class="with-margin">
+      <paper-input
+        id="size-input"
+        label="Size of the data set used for sorting (the higher and the longer the sort will take)"
+        value="{{size::input}}"
+        type="number"
+        min="1000"
+        error-message="Invalid input! (Min value is 1000)"
+        auto-validate="true">
+      </paper-input>
+    </div>
+
+    <button on-click="restCall" disabled="{{freeze}}">Compute!</button>
+
+    <h3>Below are the results for the given parameters</h3>
+
+    <div class="center">
+      <paper-spinner-lite active="{{freeze}}" hidden="{{!freeze}}"></paper-spinner-lite>
+      <algo-visu data="{{data}}" hidden="{{freeze}}"></algo-visu>
+    </div>
+
+  </template>
+  <script>
+    Polymer({
+      is: "algo-rest",
+
+      restCall: function () {
+        this.freeze = true;
+        this.$.ajax.generateRequest();
+      },
+      responseCallback: function(request) {
+        this.freeze = false;
+        this.data = request.detail.response;
+      },
+
+      properties: {
+        iteration: {
+          type: Number,
+          value: 10,
+          notify: true
+        },
+        size: {
+          type: Number,
+          value: 1000,
+          notify: true
+        },
+        data: {
+          type: Object
+        },
+        freeze: {
+          type: Boolean,
+          value: false,
+          notify: true
+        }
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,135 @@
+<dom-module id="algo-visu" attributes="data">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .chart rect {
+        fill: steelblue;
+      }
+
+      .chart rect:hover{
+        fill: #ff5b52;
+      }
+
+      .chart text {
+        fill: white;
+        font: 10px sans-serif;
+        text-anchor: end;
+      }
+
+      .axis text {
+        font: 10px sans-serif;
+      }
+
+      .axis path,
+      .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+      .axis text {
+        fill: black;
+      }
+    </style>
+    <svg id="svg" class="chart"></svg>
+  </template>
+  <script>
+    Polymer({
+      is: 'algo-visu',
+
+      properties: {
+        data: {
+          type: Object,
+          notify: true,
+          observer: '_dataChanged'
+        }
+      },
+
+      createElements: function () {
+        //this.width = 420;
+        this.barHeight = 20;
+
+        this.margin = {top: 20, right: 30, bottom: 30, left: 40};
+        this.width = 960 - this.margin.left - this.margin.right;
+
+        this.x = d3.scale.linear()
+          .range([0, this.width]);
+
+        this.chart = d3.select(this.$.svg)
+          .attr("width", this.width + this.margin.left + this.margin.right)
+          .attr("transform", "translate(" + this.margin.left + "," + this.margin.top + ")");
+
+        this.xAxis = d3.svg.axis()
+          .scale(this.x)
+          .orient("bottom");
+      },
+      removeElements: function () {
+        d3.select(this.$.svg).selectAll("*").remove();
+      },
+      drawChart: function () {
+        var me = this;
+
+        if (me.data && me.data.reportItems) {
+          var dataContent = me.data.reportItems;
+
+          me.height = me.barHeight * (me.data.reportItems.length + 3) - this.margin.top - this.margin.bottom;
+          me.chart.attr("height", me.height + this.margin.top + this.margin.bottom);
+
+          me.x.domain([0, d3.max(dataContent, function (d) {
+            return d.avgTime;
+          })]);
+
+          // chart
+          var bar = me.chart.selectAll("g")
+            .data(dataContent, function (d) {
+              return d.avgTime;
+            })
+            .enter().append("g")
+            .attr("transform", function (d, i) {
+              return "translate(0," + i * me.barHeight + ")";
+            });
+
+          bar.append("rect")
+            .attr("width", function (d) {
+              return me.x(d.avgTime);
+            })
+            .attr("height", me.barHeight - 1);
+
+          // names
+          bar.append("text")
+            .attr("x", function (d) {
+              return me.x(d.avgTime) - d.algoName.length;
+            })
+            .attr("y", me.barHeight / 2)
+            .attr("dy", ".35em")
+            .text(function (d) {
+              return d.algoName;
+            });
+
+          // legend
+          me.chart.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + me.barHeight * me.data.reportItems.length + ")")
+            .call(me.xAxis)
+            .append("text")
+            .attr("x", 100)
+            .attr("y", me.barHeight * me.data.reportItems.length)
+            .attr("dx", ".71em")
+            .style("text-anchor", "end")
+            .text("Avg. Time (ms)");
+        }
+      },
+      ready: function () {
+        this.scopeSubtree(this.$.svg, true); // trigger css after svg is populated
+        this.createElements();
+        this.drawChart();
+      },
+      _dataChanged: function() {
+        this.removeElements();
+        this.drawChart();
+      }
+    });
+  </script>
+</dom-module>
