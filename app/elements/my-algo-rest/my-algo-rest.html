@@ -8,6 +8,11 @@
     .with-margin {
       margin-bottom: 15px;
     }
+
+    .button {
+      background-color: lightgrey;
+      color: black;
+    }
   </style>
   <template>
 
@@ -46,7 +51,7 @@
       </paper-input>
     </div>
 
-    <button on-click="restCall" disabled="{{freeze}}">Compute!</button>
+    <paper-button raised class="button" on-click="restCall" disabled="{{freeze}}">Compute!</paper-button>
 
     <h3>Below are the results for the given parameters</h3>
 
