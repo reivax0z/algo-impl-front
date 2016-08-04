@@ -1,0 +1,86 @@
+<dom-module id="report-rest">
+  <style include="iron-flex iron-flex-alignment">
+    .center {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+    }
+
+    .with-margin {
+      margin-bottom: 15px;
+    }
+
+    .button {
+      background-color: lightgrey;
+      color: black;
+    }
+  </style>
+  <template>
+
+    <iron-ajax
+      id="ajax_report"
+      url="http://localhost:8080/algo-impl/report/SORT/{{size}}"
+      handle-as="json"
+      content-type="application/json"
+      method="GET"
+      on-response="_onResponseReportCallback"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <h3>Interact and check the results</h3>
+
+    <div class="with-margin">
+      <paper-input
+        id="size-input"
+        label="Size of the data set used for sorting"
+        value="{{size::input}}"
+        type="number"
+        min="1000"
+        error-message="Invalid input! (Min value is 1000)"
+        auto-validate="true">
+      </paper-input>
+    </div>
+
+    <paper-button raised class="button" on-click="_onRestReportCall" disabled="{{freeze}}">Get Reports</paper-button>
+
+    <h3>Below are the results for the given parameters</h3>
+
+    <ul>
+      <template is="dom-repeat" items="{{data}}">
+        <li><a href$="{{baseUrl}}report/{{item.id}}">{{item.id}}</a></li>
+      </template>
+    </ul>
+
+  </template>
+  <script>
+    Polymer({
+      is: "report-rest",
+
+      _onRestReportCall: function () {
+        this.disableSave = true;
+        this.successSave = false;
+        this.$.ajax_report.generateRequest();
+      },
+      _onResponseReportCallback: function(response) {
+        this.disableSave = true;
+        this.data = response.detail.response;
+        this.successSave = true;
+      },
+
+      properties: {
+        size: {
+          type: Number,
+          value: 1000,
+          notify: true
+        },
+        data: {
+          type: Object
+        },
+        freeze: {
+          type: Boolean,
+          value: false,
+          notify: true
+        }
+      }
+    });
+  </script>
+</dom-module>

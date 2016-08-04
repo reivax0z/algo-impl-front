@@ -84,6 +84,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="home"></iron-icon>
             <span>Home</span>
           </a>
+          <a data-route="reports" href="{{baseUrl}}reports">
+            <iron-icon icon="info"></iron-icon>
+            <span>Report</span>
+          </a>
+          <a data-route="contact" href="{{baseUrl}}contact">
+            <iron-icon icon="mail"></iron-icon>
+            <span>Contact</span>
+          </a>
         </paper-menu>
       </paper-scroll-header-panel>
 
@@ -113,15 +121,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Main Content -->
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
-            <section data-route="home" tabindex="-1">
 
+            <section data-route="home" tabindex="-1">
               <paper-material elevation="1">
                 <h1>Sorting Algorithms</h1>
 
                 <algo-rest></algo-rest>
 
               </paper-material>
+            </section>
 
+            <section data-route="reports" tabindex="-1">
+              <paper-material elevation="1">
+                <h1 class="page-title" tabindex="-1">Reports</h1>
+                <report-rest></report-rest>
+              </paper-material>
+            </section>
+
+            <section data-route="report-detail" tabindex="-1">
+              <paper-material elevation="1">
+                <h1 class="page-title" tabindex="-1">Report: {{params.id}}</h1>
+                <report-rest-detail report_id="{{params.id}}"></report-rest-detail>
+              </paper-material>
+            </section>
+
+            <section data-route="contact" tabindex="-1">
+              <paper-material elevation="1">
+                <h1 class="page-title" tabindex="-1">Contact</h1>
+                <h3>Author Contact Details</h3>
+                <ul>
+                  <li>Xavier CARON</li>
+                  <li><a href="mailto:xavier.w.caron@gmail.com?subject=Algorithm implementations Polymer">Contact me</a></li>
+                  <li><a href="http://www.linkedin.com/in/xavierwilfriddimitrycaron">See more</a></li>
+                </ul>
+              </paper-material>
             </section>
 
           </iron-pages>

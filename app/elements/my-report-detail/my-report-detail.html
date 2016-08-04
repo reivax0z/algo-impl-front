@@ -1,0 +1,60 @@
+<dom-module id="report-rest-detail" attributes="report_id">
+  <style include="iron-flex iron-flex-alignment">
+    .center {
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+    }
+
+    .with-margin {
+      margin-bottom: 15px;
+    }
+  </style>
+  <template>
+
+    <iron-ajax
+      id="ajax_report"
+      url="http://localhost:8080/algo-impl/report/{{report_id}}"
+      handle-as="json"
+      content-type="application/json"
+      method="GET"
+      on-response="_onResponseReportCallback"
+      debounce-duration="300">
+    </iron-ajax>
+
+    <h3>Report details</h3>
+
+    <ul class="with-margin">
+      <li><b>ID:</b> {{data.id}}</li>
+      <li><b>Iterations:</b> {{data.nbIterations}}</li>
+      <li><b>Size:</b> {{data.sampleSize}}</li>
+    </ul>
+
+    <div class="center">
+      <algo-visu data="{{data}}"></algo-visu>
+    </div>
+
+  </template>
+  <script>
+    Polymer({
+      is: "report-rest-detail",
+
+      _onRestReportCall: function () {
+        this.$.ajax_report.generateRequest();
+      },
+      _onResponseReportCallback: function(response) {
+        this.data = response.detail.response;
+      },
+
+      properties: {
+        report_id: {
+          type: String,
+          notify: true,
+          observer: '_onRestReportCall'
+        },
+        data: {
+          type: Object
+        }
+      }
+    });
+  </script>
+</dom-module>
