@@ -64,13 +64,13 @@
 
     <paper-button raised class="button" on-click="_onRestSortCall" disabled="{{freeze}}">Compute!</paper-button>
 
-    <h3>Below are the results for the given parameters</h3>
+    <h3>Below is the report for the given parameters</h3>
 
     <div class="center">
       <paper-spinner-lite active="{{freeze}}" hidden="{{!freeze}}"></paper-spinner-lite>
       <algo-visu data="{{data}}" hidden="{{freeze}}"></algo-visu>
     </div>
-    <paper-button raised class="button" on-click="_onRestReportCall" disabled="{{disableSave}}">Save</paper-button>
+    <paper-button raised class="button" on-click="_onRestReportCall" disabled="{{disableSave}}">Save the Report</paper-button>
     <paper-toast opened={{successSave}} duration="3000" text="Report saved with ID={{data.id}}"></paper-toast>
 
   </template>

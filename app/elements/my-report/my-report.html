@@ -26,7 +26,7 @@
       debounce-duration="300">
     </iron-ajax>
 
-    <h3>Interact and check the results</h3>
+    <h3>Retrieve the Reports matching the following</h3>
 
     <div class="with-margin">
       <paper-input
@@ -56,14 +56,12 @@
       is: "report-rest",
 
       _onRestReportCall: function () {
-        this.disableSave = true;
-        this.successSave = false;
+        this.freeze = true;
         this.$.ajax_report.generateRequest();
       },
       _onResponseReportCallback: function(response) {
-        this.disableSave = true;
         this.data = response.detail.response;
-        this.successSave = true;
+        this.freeze = false;
       },
 
       properties: {
