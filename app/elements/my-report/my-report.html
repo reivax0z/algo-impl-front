@@ -18,7 +18,7 @@
 
     <iron-ajax
       id="ajax_report"
-      url="http://localhost:8080/algo-impl/report/SORT/{{size}}"
+      url="http://localhost:8080/algo-impl/report/{{algoType}}/{{size}}"
       handle-as="json"
       content-type="application/json"
       method="GET"
@@ -26,12 +26,20 @@
       debounce-duration="300">
     </iron-ajax>
 
-    <h3>Retrieve the Reports matching the following</h3>
+    <h3>Retrieve the Reports matching the following parameters</h3>
+
+    <div class="with-margin">
+      <paper-dropdown-menu id="algo_selector" label="Algorithm Type">
+        <paper-listbox class="dropdown-content" selected="0">
+          <paper-item>SORT</paper-item>
+        </paper-listbox>
+      </paper-dropdown-menu>
+    </div>
 
     <div class="with-margin">
       <paper-input
         id="size-input"
-        label="Size of the data set used for sorting"
+        label="Size of the data set used"
         value="{{size::input}}"
         type="number"
         min="1000"
@@ -40,7 +48,13 @@
       </paper-input>
     </div>
 
-    <paper-button raised class="button" on-click="_onRestReportCall" disabled="{{freeze}}">Get Reports</paper-button>
+    <paper-button
+      raised
+      class="button"
+      on-click="_onRestReportCall"
+      disabled="{{freeze}}">
+      <iron-icon icon="cloud-download"></iron-icon>Get Reports
+    </paper-button>
 
     <h3>Below are the results for the given parameters</h3>
 
@@ -57,6 +71,7 @@
 
       _onRestReportCall: function () {
         this.freeze = true;
+        this.algoType = this.$.algo_selector.value;
         this.$.ajax_report.generateRequest();
       },
       _onResponseReportCallback: function(response) {
@@ -68,6 +83,10 @@
         size: {
           type: Number,
           value: 1000,
+          notify: true
+        },
+        algoType: {
+          type: String,
           notify: true
         },
         data: {

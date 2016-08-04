@@ -62,25 +62,54 @@
       </paper-input>
     </div>
 
-    <paper-button raised class="button" on-click="_onRestSortCall" disabled="{{freeze}}">Compute!</paper-button>
+    <paper-button
+      raised
+      class="button"
+      on-click="_onRestSortCall"
+      disabled="{{freeze}}">
+      <iron-icon icon="assessment"></iron-icon>Compute
+    </paper-button>
+
+    <paper-button
+      raised
+      class="button"
+      on-click="_onRestReportCall"
+      disabled="{{disableSave}}">
+      <iron-icon icon="save"></iron-icon>{{saveButtonText}}
+    </paper-button>
 
     <h3>Below is the report for the given parameters</h3>
 
     <div class="center">
-      <paper-spinner-lite active="{{freeze}}" hidden="{{!freeze}}"></paper-spinner-lite>
-      <algo-visu data="{{data}}" hidden="{{freeze}}"></algo-visu>
+      <paper-spinner-lite
+        active="{{freeze}}"
+        hidden="{{!freeze}}">
+      </paper-spinner-lite>
+
+      <algo-visu
+        data="{{data}}"
+        hidden="{{freeze}}">
+      </algo-visu>
     </div>
-    <paper-button raised class="button" on-click="_onRestReportCall" disabled="{{disableSave}}">Save the Report</paper-button>
-    <paper-toast opened={{successSave}} duration="3000" text="Report saved with ID={{data.id}}"></paper-toast>
+
+    <paper-toast
+      opened={{successSave}}
+      duration="3000"
+      text="Report saved with ID={{data.id}}">
+    </paper-toast>
 
   </template>
   <script>
+    var unsavedText = 'Save Report';
+    var savedText = 'Saved';
+
     Polymer({
       is: "algo-rest",
 
       _onRestSortCall: function () {
         this.freeze = true;
         this.disableSave = true;
+        this.saveButtonText = unsavedText;
         this.$.ajax_sort.generateRequest();
       },
       _onRestReportCall: function () {
@@ -95,8 +124,9 @@
       },
       _onResponseReportCallback: function(response) {
         this.disableSave = true;
-        this.data = response.detail.response;
+        this.saveButtonText = savedText;
         this.successSave = true;
+        this.data = response.detail.response;
       },
 
       properties: {
@@ -126,6 +156,11 @@
         successSave: {
           type: Boolean,
           value: false,
+          notify: true
+        },
+        saveButtonText: {
+          type: String,
+          value: unsavedText,
           notify: true
         }
       }
