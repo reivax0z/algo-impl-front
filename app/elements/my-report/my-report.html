@@ -53,7 +53,7 @@
       class="button"
       on-click="_onRestReportCall"
       disabled="{{freeze}}">
-      <iron-icon icon="cloud-download"></iron-icon>Get Reports
+      <iron-icon icon="view-list"></iron-icon>Get Reports
     </paper-button>
 
     <div id="results" hidden="{{!showResults}}">
@@ -61,11 +61,34 @@
 
       <ul>
         <template is="dom-repeat" items="{{data}}">
-          <li><a href$="{{baseUrl}}report/{{item.id}}">{{item.id}}</a></li>
+          <li><a href="{{baseUrl}}report/{{item.id}}">{{item.id}}</a></li>
         </template>
       </ul>
-
     </div>
+
+
+    <h3>Retrieve one Report by ID</h3>
+
+    <div class="with-margin">
+      <paper-input
+        id="reportId-input"
+        label="ID of the Report"
+        value="{{reportId::input}}"
+        type="string"
+        minLength="10"
+        error-message="Invalid input! (Min length is 10)"
+        auto-validate="true">
+      </paper-input>
+    </div>
+
+    <paper-button
+      raised
+      class="button"
+      on-click="_onRedirectToReportId">
+      <iron-icon icon="view-carousel"></iron-icon>Get Report
+    </paper-button>
+
+    <a id="redirectLink" hidden="true" href="{{baseUrl}}report/{{reportId}}"></a>
 
     <paper-toast
       opened={{noResult}}
@@ -94,6 +117,9 @@
           this.showResults = true;
         }
       },
+      _onRedirectToReportId: function() {
+        this.$.redirectLink.click();
+      },
 
       properties: {
         size: {
@@ -102,6 +128,10 @@
           notify: true
         },
         algoType: {
+          type: String,
+          notify: true
+        },
+        reportId: {
           type: String,
           notify: true
         },
