@@ -2,7 +2,7 @@
 
 > This is a front-end project for classic Algorithm implementations.
 
-This project relies on the _Polymer Starter Kit_ project in order to leverage the power of Polymer components.
+This project relies on the [Polymer Starter Kit](https://developers.google.com/web/tools/polymer-starter-kit/?hl=en) project in order to leverage the power of Polymer components.
 
 ### Included out of the box:
 
@@ -12,19 +12,18 @@ This project relies on the _Polymer Starter Kit_ project in order to leverage th
 * Unit testing with [Web Component Tester](https://github.com/Polymer/web-component-tester)
 * Optional offline setup through [Platinum](https://elements.polymer-project.org/browse?package=platinum-elements) Service Worker elements
 * End-to-end Build Tooling (including [Vulcanize](https://github.com/Polymer/vulcanize))
-* [Recipes](/docs/README.md/) for ES2015 support, Polymer performance, using Chrome Dev Editor, Deploying to GitHub Pages, Deploying to Firebase, Mobile Chrome Apps and lint tools.
+* Graphics powered by [D3.js](https://d3js.org/).
 
 ### Getting Started
 
 #### Prerequisites
 
-The full starter kit requires the following major dependencies:
+This project requires the following major dependencies:
 
 - Node.js, used to run JavaScript tools from the command line.
 - npm, the node package manager, installed with Node.js and used to install Node.js packages.
 - gulp, a Node.js-based build tool.
 - bower, a Node.js-based package manager used to install front-end packages (like Polymer).
-- The starter kit gulp build process uses platform specific tools which is handled by node-gyp which is included in node.js. See https://github.com/nodejs/node-gyp/blob/master/README.md for additional platform specific dependencies.
 
 **To install dependencies:**
 
