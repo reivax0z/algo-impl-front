@@ -5,6 +5,11 @@
         display: block;
       }
 
+      .center {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+      }
+
       .chart {
         width: 100%;
         height: 100%;
@@ -36,7 +41,17 @@
         shape-rendering: crispEdges;
       }
     </style>
+    <h3 class="center">Comparative view of Implementations</h3>
+
     <svg id="svg" class="chart"></svg>
+
+    <template is="dom-repeat" items="{{data.reportItems}}">
+      <div class="center" id="{{dataDetails.algoName}}">
+        <algo-detail-visu
+          data="{{item}}">
+        </algo-detail-visu>
+      </div>
+    </template>
   </template>
   <script>
     Polymer({

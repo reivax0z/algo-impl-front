@@ -56,13 +56,22 @@
       <iron-icon icon="cloud-download"></iron-icon>Get Reports
     </paper-button>
 
-    <h3>Below are the results for the given parameters</h3>
+    <div id="results" hidden="{{!showResults}}">
+      <h3>Below are the results for the given parameters</h3>
 
-    <ul>
-      <template is="dom-repeat" items="{{data}}">
-        <li><a href$="{{baseUrl}}report/{{item.id}}">{{item.id}}</a></li>
-      </template>
-    </ul>
+      <ul>
+        <template is="dom-repeat" items="{{data}}">
+          <li><a href$="{{baseUrl}}report/{{item.id}}">{{item.id}}</a></li>
+        </template>
+      </ul>
+
+    </div>
+
+    <paper-toast
+      opened={{noResult}}
+      duration="3000"
+      text="No results in DB for the given parameters...">
+    </paper-toast>
 
   </template>
   <script>
@@ -73,10 +82,17 @@
         this.freeze = true;
         this.algoType = this.$.algo_selector.value;
         this.$.ajax_report.generateRequest();
+        this.showResults = false;
       },
       _onResponseReportCallback: function(response) {
         this.data = response.detail.response;
         this.freeze = false;
+
+        if (this.data.length == 0) {
+          this.noResult = true;
+        } else {
+          this.showResults = true;
+        }
       },
 
       properties: {
@@ -93,6 +109,16 @@
           type: Object
         },
         freeze: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+        noResult: {
+          type: Boolean,
+          value : false,
+          notify: true
+        },
+        showResults: {
           type: Boolean,
           value: false,
           notify: true

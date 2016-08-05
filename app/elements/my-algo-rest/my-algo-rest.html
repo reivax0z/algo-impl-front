@@ -70,36 +70,32 @@
       <iron-icon icon="assessment"></iron-icon>Compute
     </paper-button>
 
-    <paper-button
-      raised
-      class="button"
-      on-click="_onRestReportCall"
-      disabled="{{disableSave}}">
-      <iron-icon icon="save"></iron-icon>{{saveButtonText}}
-    </paper-button>
-
-    <h3>Below is the report for the given parameters</h3>
-
     <div class="center">
       <paper-spinner-lite
         active="{{freeze}}"
         hidden="{{!freeze}}">
       </paper-spinner-lite>
-
-      <algo-visu
-        data="{{data}}"
-        hidden="{{freeze}}">
-      </algo-visu>
     </div>
 
-    <template is="dom-repeat" items="{{dataDetails}}">
+    <div id="results" hidden="{{!showResults}}">
+
+      <h3>Report Details</h3>
+
       <div class="center">
-        <algo-detail-visu
-          data="{{item}}"
+        <algo-visu
+          data="{{data}}"
           hidden="{{freeze}}">
-        </algo-detail-visu>
+        </algo-visu>
       </div>
-    </template>
+
+      <paper-button
+        raised
+        class="button"
+        on-click="_onRestReportCall"
+        disabled="{{disableSave}}">
+        <iron-icon icon="save"></iron-icon>{{saveButtonText}}
+      </paper-button>
+    </div>
 
     <paper-toast
       opened={{successSave}}
@@ -118,6 +114,7 @@
       _onRestSortCall: function () {
         this.freeze = true;
         this.disableSave = true;
+        this.showResults = false;
         this.saveButtonText = unsavedText;
         this.$.ajax_sort.generateRequest();
       },
@@ -129,15 +126,14 @@
       _onResponseSortCallback: function(response) {
         this.freeze = false;
         this.disableSave = false;
+        this.showResults = true;
         this.data = response.detail.response;
-        this.dataDetails = this.data.reportItems;
       },
       _onResponseReportCallback: function(response) {
         this.disableSave = true;
         this.saveButtonText = savedText;
         this.successSave = true;
         this.data = response.detail.response;
-        this.dataDetails = this.data.reportItems;
       },
 
       properties: {
@@ -152,9 +148,6 @@
           notify: true
         },
         data: {
-          type: Object
-        },
-        dataDetails: {
           type: Object
         },
         freeze: {
@@ -175,6 +168,11 @@
         saveButtonText: {
           type: String,
           value: unsavedText,
+          notify: true
+        },
+        showResults: {
+          type: Boolean,
+          value: false,
           notify: true
         }
       }

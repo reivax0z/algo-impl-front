@@ -5,6 +5,11 @@
         display: block;
       }
 
+      .center {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+      }
+
       svg {
         font: 10px sans-serif;
       }
@@ -41,6 +46,7 @@
         stroke: #000;
       }
     </style>
+    <h3 class="center">Detailed view of {{data.algoName}}</h3>
     <svg id="svg" class="svg"></svg>
   </template>
   <script>

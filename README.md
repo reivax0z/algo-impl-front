@@ -74,6 +74,12 @@ This runs the unit tests defined in the `app/test` directory through [web-compon
 
 To run tests Java 7 or higher is required. To update Java go to http://www.oracle.com/technetwork/java/javase/downloads/index.html and download ***JDK*** and install it.
 
+#### Graphics
+
+The various graphics used in the app are based on [D3](https://d3js.org/).
+
+For more details on the D3 API, visit the following: [D3 API](https://github.com/d3/d3/blob/master/API.md).
+
 #### Build & Vulcanize
 
 ```sh
