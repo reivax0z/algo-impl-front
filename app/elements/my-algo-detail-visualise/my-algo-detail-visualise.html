@@ -20,6 +20,10 @@
         stroke-width: 1.5px;
       }
 
+      .label {
+        fill: #000;
+      }
+
       path.area {
         fill: #e7e7e7;
       }
@@ -36,8 +40,10 @@
         stroke-opacity: .5;
       }
 
+      .x.axis line,
       .x.axis path {
-        display: none;
+        fill: none;
+        stroke: #fff;
       }
 
       .y.axis line,
@@ -79,7 +85,7 @@
           .scale(this.x)
           .tickSize(-this.height);
 
-        this.yAxis = d3.axisRight()
+        this.yAxis = d3.axisLeft()
           .scale(this.y)
           .ticks(4);
 
@@ -122,12 +128,27 @@
           me.svg.append("g")
             .attr("class", "x axis")
             .attr("transform", "translate(0," + me.height + ")")
-            .call(me.xAxis);
+            .call(me.xAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("x", me.width - 6)
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .attr("dx", ".71em")
+            .style("text-anchor", "end")
+            .text("Iteration");
 
           me.svg.append("g")
             .attr("class", "y axis")
-            .attr("transform", "translate(" + me.width + ",0)")
-            .call(me.yAxis);
+            .call(me.yAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("x", me.margin.left)
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .attr("dx", ".71em")
+            .style("text-anchor", "beginning")
+            .text("Time (ms)");
 
           me.svg.append("path")
             .data([dataContent])
