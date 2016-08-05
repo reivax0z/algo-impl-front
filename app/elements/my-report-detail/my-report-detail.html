@@ -34,6 +34,15 @@
       <algo-visu data="{{data}}"></algo-visu>
     </div>
 
+    <template is="dom-repeat" items="{{dataDetails}}">
+      <div class="center">
+        <algo-detail-visu
+          data="{{item}}"
+          hidden="{{freeze}}">
+        </algo-detail-visu>
+      </div>
+    </template>
+
   </template>
   <script>
     Polymer({
@@ -44,6 +53,7 @@
       },
       _onResponseReportCallback: function(response) {
         this.data = response.detail.response;
+        this.dataDetails = this.data.reportItems;
       },
 
       properties: {
@@ -53,6 +63,9 @@
           observer: '_onRestReportCall'
         },
         data: {
+          type: Object
+        },
+        dataDetails: {
           type: Object
         }
       }

@@ -92,6 +92,15 @@
       </algo-visu>
     </div>
 
+    <template is="dom-repeat" items="{{dataDetails}}">
+      <div class="center">
+        <algo-detail-visu
+          data="{{item}}"
+          hidden="{{freeze}}">
+        </algo-detail-visu>
+      </div>
+    </template>
+
     <paper-toast
       opened={{successSave}}
       duration="3000"
@@ -121,12 +130,14 @@
         this.freeze = false;
         this.disableSave = false;
         this.data = response.detail.response;
+        this.dataDetails = this.data.reportItems;
       },
       _onResponseReportCallback: function(response) {
         this.disableSave = true;
         this.saveButtonText = savedText;
         this.successSave = true;
         this.data = response.detail.response;
+        this.dataDetails = this.data.reportItems;
       },
 
       properties: {
@@ -141,6 +152,9 @@
           notify: true
         },
         data: {
+          type: Object
+        },
+        dataDetails: {
           type: Object
         },
         freeze: {
