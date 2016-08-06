@@ -24,6 +24,14 @@
         fill: #000;
       }
 
+      .median.label {
+        fill: red;
+      }
+
+      .median.line {
+        stroke: red;
+      }
+
       path.area {
         fill: #e7e7e7;
       }
@@ -120,6 +128,10 @@
             return d.timeSpent; })]
           );
 
+          me.median = d3.mean(dataContent, function(d) {
+            return d.timeSpent;
+          });
+
           me.svg.append("path")
             .data([dataContent])
             .attr("class", "area")
@@ -154,6 +166,22 @@
             .data([dataContent])
             .attr("class", "line")
             .attr("d", me.line);
+
+          me.svg.append('line')
+            .attr('class', 'median line')
+            .attr('y1', me.y(me.median))
+            .attr('y2', me.y(me.median))
+            .attr('x1', 0)
+            .attr('x2', me.x(dataContent[dataContent.length-1].iteration));
+
+          me.svg.append("text")
+            .attr("class", "median label")
+            .attr("x", me.width - 6)
+            .attr("y", me.y(me.median) + 6)
+            .attr("dy", ".71em")
+            .attr("dx", ".71em")
+            .style("text-anchor", "end")
+            .text("Mean");
 
           me.svg.append("text")
             .attr("x", me.width - 6)
