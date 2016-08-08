@@ -1,4 +1,4 @@
-<dom-module id="algo-detail-visu" attributes="data">
+<dom-module id="algo-detail-accumulated-visu" attributes="data">
   <template>
     <style>
       :host {
@@ -24,11 +24,11 @@
         fill: #000;
       }
 
-      .mean.label {
+      .median.label {
         fill: #ce1500;
       }
 
-      .mean.line {
+      .median.line {
         stroke: #ce1500;
       }
 
@@ -60,12 +60,12 @@
         stroke: #000;
       }
     </style>
-    <h3 class="center">Detailed view of {{data.algoName}}</h3>
+    <h3 class="center">Accumulated view of {{data.algoName}}</h3>
     <svg id="svg" class="svg"></svg>
   </template>
   <script>
     Polymer({
-      is: 'algo-detail-visu',
+      is: 'algo-detail-accumulated-visu',
 
       properties: {
         data: {
@@ -118,22 +118,17 @@
       drawChart: function () {
         var polymerObj = this;
 
-        if (polymerObj.data && polymerObj.data.timePerIteration) {
-          var dataContent = polymerObj.data.timePerIteration;
+        if (polymerObj.data && polymerObj.data.timePerSample) {
+          var dataContent = polymerObj.data.timePerSample;
 
           polymerObj.x.domain(d3.extent(dataContent, function(d) {
             return d.iteration; }
           ));
-          polymerObj.y.domain([
-            d3.min(dataContent, function(d) {
-              return d.timeSpent;
-            }),
-            d3.max(dataContent, function(d) {
-              return d.timeSpent;
-            })
-          ]);
+          polymerObj.y.domain([0, d3.max(dataContent, function(d) {
+            return d.timeSpent; })]
+          );
 
-          polymerObj.mean = d3.mean(dataContent, function(d) {
+          polymerObj.median = d3.median(dataContent, function(d) {
             return d.timeSpent;
           });
 
@@ -153,7 +148,7 @@
             .attr("dy", ".71em")
             .attr("dx", ".71em")
             .style("text-anchor", "end")
-            .text("Iteration");
+            .text("Sample Size");
 
           polymerObj.svg.append("g")
             .attr("class", "y axis")
@@ -173,20 +168,20 @@
             .attr("d", polymerObj.line);
 
           polymerObj.svg.append('line')
-            .attr('class', 'mean line')
-            .attr('y1', polymerObj.y(polymerObj.mean))
-            .attr('y2', polymerObj.y(polymerObj.mean))
+            .attr('class', 'median line')
+            .attr('y1', polymerObj.y(polymerObj.median))
+            .attr('y2', polymerObj.y(polymerObj.median))
             .attr('x1', 0)
             .attr('x2', polymerObj.x(dataContent[dataContent.length-1].iteration));
 
           polymerObj.svg.append("text")
-            .attr("class", "mean label")
+            .attr("class", "median label")
             .attr("x", polymerObj.width - 6)
-            .attr("y", polymerObj.y(polymerObj.mean) + 6)
+            .attr("y", polymerObj.y(polymerObj.median) + 6)
             .attr("dy", ".71em")
             .attr("dx", ".71em")
             .style("text-anchor", "end")
-            .text("Mean");
+            .text("Median");
 
           polymerObj.svg.append("text")
             .attr("x", polymerObj.width - 6)

@@ -51,6 +51,12 @@
           data="{{item}}">
         </algo-detail-visu>
       </div>
+
+      <div class="center" id="{{dataDetails.algoName}}_accumulated">
+        <algo-detail-accumulated-visu
+          data="{{item}}">
+        </algo-detail-accumulated-visu>
+      </div>
     </template>
   </template>
   <script>
@@ -85,53 +91,53 @@
         d3.select(this.$.svg).selectAll("*").remove();
       },
       drawChart: function () {
-        var me = this;
+        var polymerObj = this;
 
-        if (me.data && me.data.reportItems) {
-          var dataContent = me.data.reportItems;
+        if (polymerObj.data && polymerObj.data.reportItems) {
+          var dataContent = polymerObj.data.reportItems;
 
-          me.height = me.barHeight * (me.data.reportItems.length + 3) - this.margin.top - this.margin.bottom;
-          me.chart.attr("height", me.height + this.margin.top + this.margin.bottom);
+          polymerObj.height = polymerObj.barHeight * (polymerObj.data.reportItems.length + 3) - polymerObj.margin.top - polymerObj.margin.bottom;
+          polymerObj.chart.attr("height", polymerObj.height + polymerObj.margin.top + polymerObj.margin.bottom);
 
-          me.x.domain([0, d3.max(dataContent, function (d) {
+          polymerObj.x.domain([0, d3.max(dataContent, function (d) {
             return d.avgTime;
           })]);
 
           // chart
-          var bar = me.chart.selectAll("g")
+          var bar = polymerObj.chart.selectAll("g")
             .data(dataContent, function (d) {
               return d.avgTime;
             })
             .enter().append("g")
             .attr("transform", function (d, i) {
-              return "translate(0," + i * me.barHeight + ")";
+              return "translate(0," + i * polymerObj.barHeight + ")";
             });
 
           bar.append("rect")
             .attr("width", function (d) {
-              return me.x(d.avgTime);
+              return polymerObj.x(d.avgTime);
             })
-            .attr("height", me.barHeight - 1);
+            .attr("height", polymerObj.barHeight - 1);
 
           // names
           bar.append("text")
             .attr("x", function (d) {
-              return me.x(d.avgTime) - d.algoName.length;
+              return polymerObj.x(d.avgTime) - d.algoName.length;
             })
-            .attr("y", me.barHeight / 2)
+            .attr("y", polymerObj.barHeight / 2)
             .attr("dy", ".35em")
             .text(function (d) {
               return d.algoName;
             });
 
           // legend
-          me.chart.append("g")
+          polymerObj.chart.append("g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + me.barHeight * me.data.reportItems.length + ")")
-            .call(me.xAxis)
+            .attr("transform", "translate(0," + polymerObj.barHeight * polymerObj.data.reportItems.length + ")")
+            .call(polymerObj.xAxis)
             .append("text")
-            .attr("x", me.width - 6)
-            .attr("y", me.margin.bottom/2)
+            .attr("x", polymerObj.width - 6)
+            .attr("y", polymerObj.margin.bottom/2)
             .attr("dy", ".71em")
             .attr("dx", ".71em")
             .style("text-anchor", "end")

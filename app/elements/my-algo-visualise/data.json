@@ -8,11 +8,21 @@
       "timePerIteration": [
         {
           "iteration": 1,
-          "timeSpent": 2
+          "timeSpent": 200
         },
         {
           "iteration": 3,
-          "timeSpent": 4
+          "timeSpent": 150
+        }
+      ],
+      "timePerSample": [
+        {
+          "iteration": 1000,
+          "timeSpent": 50
+        },
+        {
+          "iteration": 2000,
+          "timeSpent": 75
         }
       ]
     },
@@ -22,11 +32,21 @@
       "timePerIteration": [
         {
           "iteration": 1,
-          "timeSpent": 2
+          "timeSpent": 800
         },
         {
           "iteration": 3,
-          "timeSpent": 4
+          "timeSpent": 820
+        }
+      ],
+      "timePerSample": [
+        {
+          "iteration": 1000,
+          "timeSpent": 200
+        },
+        {
+          "iteration": 2000,
+          "timeSpent": 250
         }
       ]
     }
