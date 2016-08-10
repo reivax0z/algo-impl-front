@@ -1,4 +1,4 @@
-<dom-module id="report-rest">
+<dom-module id="report-rest" attributes="report_end_point">
   <style include="iron-flex iron-flex-alignment">
     .center {
       @apply(--layout-horizontal);
@@ -18,7 +18,7 @@
 
     <iron-ajax
       id="ajax_report"
-      url="http://localhost:8080/algo-impl/report/{{algoType}}/{{size}}"
+      url="{{report_end_point}}/{{algoType}}/{{size}}"
       handle-as="json"
       content-type="application/json"
       method="GET"
@@ -122,6 +122,10 @@
       },
 
       properties: {
+        report_end_point: {
+          type: String,
+          notify: true
+        },
         size: {
           type: Number,
           value: 1000,

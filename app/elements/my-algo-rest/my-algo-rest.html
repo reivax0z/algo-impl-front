@@ -1,4 +1,4 @@
-<dom-module id="algo-rest">
+<dom-module id="algo-rest" attributes="algo_end_point report_end_point">
   <style include="iron-flex iron-flex-alignment">
     .center {
       @apply(--layout-horizontal);
@@ -18,7 +18,7 @@
 
     <iron-ajax
       id="ajax_sort"
-      url="http://localhost:8080/algo-impl/algo/sort/{{iteration}}/{{size}}"
+      url="{{algo_end_point}}/{{iteration}}/{{size}}"
       handle-as="json"
       method="GET"
       on-response="_onResponseSortCallback"
@@ -27,7 +27,7 @@
 
     <iron-ajax
       id="ajax_report"
-      url="http://localhost:8080/algo-impl/report/save"
+      url="{{report_end_point}}"
       handle-as="json"
       content-type="application/json"
       method="POST"
@@ -137,6 +137,14 @@
       },
 
       properties: {
+        algo_end_point: {
+          type: String,
+          notify: true
+        },
+        report_end_point: {
+          type: String,
+          notify: true
+        },
         iteration: {
           type: Number,
           value: 10,
